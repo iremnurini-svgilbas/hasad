@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HASAD — Kişisel Paket Formu</title>
+<style>
+:root {
+  --ant:     #1a1a1e;
+  --ant2:    #26262c;
+  --ant3:    #32323a;
+  --ant4:    #42424e;
+  --gold:    #c8962e;
+  --gold2:   #e8b84b;
+  --gold3:   #a07318;
+  --cream:   #f5f0e8;
+  --white:   #ffffff;
+  --grey:    #aaaaaa;
+  --grey2:   #666670;
+  --green:   #5a9a3a;
+  --red:     #c84646;
+  --orange:  #d2781e;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--ant);
+  color: var(--cream);
+  font-family: 'Segoe UI', Arial, sans-serif;
+  min-height: 100vh;
+}
+
+/* HEADER */
+.header {
+  background: var(--ant2);
+  border-bottom: 2px solid var(--gold3);
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.logo-mark {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.bar { width: 4px; border-radius: 2px; background: var(--gold); }
+.bar-l { height: 36px; }
+.bar-r { height: 36px; }
+.bar-m { width: 14px; height: 4px; border-radius: 2px; background: var(--gold); margin: 0 -1px; align-self: center; }
+.leaf {
+  position: absolute;
+  width: 12px; height: 16px;
+  background: var(--gold);
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  top: -4px; left: 50%;
+  margin-left: -6px;
+}
+
+.logo-wrap { position: relative; display: flex; align-items: center; }
+
+.logo-text h1 { font-size: 20px; font-weight: 800; color: var(--gold); letter-spacing: 5px; }
+.logo-text p  { font-size: 9px; color: var(--grey); letter-spacing: 2px; margin-top: 2px; }
+
+.header-right { margin-left: auto; text-align: right; }
+.header-right p { font-size: 12px; color: var(--grey); }
+.header-right strong { color: var(--gold2); font-size: 13px; }
+
+/* PROGRESS */
+.progress-bar {
+  background: var(--ant2);
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--ant3);
+}
+
+.steps {
+  display: flex;
+  align-items: center;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.step-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.step-item::after {
+  content: '';
+  position: absolute;
+  top: 16px; left: 50%;
+  width: 100%; height: 2px;
+  background: var(--ant4);
+  z-index: 0;
+  transition: background .4s;
+}
+
+.step-item:last-child::after { display: none; }
+.step-item.done::after { background: var(--gold3); }
+
+.step-dot {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  border: 2px solid var(--ant4);
+  background: var(--ant3);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; color: var(--grey);
+  position: relative; z-index: 1;
+  transition: all .3s;
+}
+
+.step-item.active .step-dot {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--ant);
+  box-shadow: 0 0 0 4px rgba(200,150,46,.2);
+  transform: scale(1.1);
+}
+
+.step-item.done .step-dot {
+  background: var(--gold3);
+  border-color: var(--gold);
+  color: var(--white);
+}
+
+.step-lbl {
+  font-size: 9px; color: var(--grey);
+  margin-top: 6px; text-align: center;
+  letter-spacing: .5px; text-transform: uppercase;
+  max-width: 70px; line-height: 1.3;
+}
+
+.step-item.active .step-lbl { color: var(--gold); font-weight: 700; }
+
+/* MAIN */
+.main { max-width: 720px; margin: 0 auto; padding: 32px 24px 60px; }
+
+/* SECTION */
+.section {
+  display: none;
+  animation: fadeIn .3s ease;
+}
+
+.section.active { display: block; }
+
+@keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+.section-title {
+  font-size: 22px; font-weight: 800; color: var(--white);
+  margin-bottom: 6px;
+}
+
+.section-sub {
+  font-size: 13px; color: var(--grey);
+  margin-bottom: 28px; line-height: 1.6;
+}
+
+/* FORM GROUPS */
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.form-row.single { grid-template-columns: 1fr; }
+.form-row.triple { grid-template-columns: 1fr 1fr 1fr; }
+
+.field { display: flex; flex-direction: column; gap: 6px; }
+
+label {
+  font-size: 11px; font-weight: 700; color: var(--gold2);
+  letter-spacing: 1px; text-transform: uppercase;
+}
+
+input, select, textarea {
+  background: var(--ant3);
+  border: 1px solid var(--ant4);
+  border-radius: 8px;
+  padding: 11px 14px;
+  color: var(--cream);
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--gold3);
+  box-shadow: 0 0 0 3px rgba(200,150,46,.12);
+}
+
+input::placeholder, textarea::placeholder { color: var(--grey2); }
+
+select option { background: var(--ant3); }
+
+textarea { resize: vertical; min-height: 80px; }
+
+/* CHECKBOX GRID */
+.check-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.check-item {
+  background: var(--ant3);
+  border: 1px solid var(--ant4);
+  border-radius: 8px;
+  padding: 12px 14px;
+  display: flex; align-items: center; gap: 10px;
+  cursor: pointer;
+  transition: all .2s;
+}
+
+.check-item:hover { border-color: var(--gold3); }
+.check-item.selected { border-color: var(--gold); background: rgba(200,150,46,.08); }
+
+.check-item input[type=checkbox] { display: none; }
+
+.check-box {
+  width: 18px; height: 18px;
+  border: 2px solid var(--ant4);
+  border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: all .2s;
+}
+
+.check-item.selected .check-box {
+  background: var(--gold);
+  border-color: var(--gold);
+}
+
+.check-item.selected .check-box::after {
+  content: '✓';
+  font-size: 11px;
+  color: var(--ant);
+  font-weight: 800;
+}
+
+.check-label { font-size: 13px; color: var(--cream); }
+.check-sub { font-size: 10px; color: var(--grey); margin-top: 2px; }
+
+/* RADIO CARDS */
+.radio-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.radio-card {
+  background: var(--ant3);
+  border: 1px solid var(--ant4);
+  border-radius: 10px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all .2s;
+}
+
+.radio-card:hover { border-color: var(--gold3); }
+.radio-card.selected { border-color: var(--gold); background: rgba(200,150,46,.08); }
+.radio-card input { display: none; }
+
+.radio-card .card-icon { font-size: 24px; margin-bottom: 8px; }
+.radio-card .card-title { font-size: 14px; font-weight: 700; color: var(--white); }
+.radio-card .card-desc  { font-size: 11px; color: var(--grey); margin-top: 4px; line-height: 1.4; }
+.radio-card .card-price { font-size: 16px; font-weight: 800; color: var(--gold); margin-top: 8px; }
+.radio-card .card-disc  { font-size: 10px; color: var(--green); }
+
+/* ÜRÜN MIKTAR TABLOSU */
+.product-table {
+  background: var(--ant3);
+  border: 1px solid var(--ant4);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.product-table-header {
+  display: grid;
+  grid-template-columns: 1fr 100px 100px 100px;
+  padding: 10px 16px;
+  background: var(--ant2);
+  border-bottom: 1px solid var(--ant4);
+}
+
+.product-table-header span {
+  font-size: 10px; font-weight: 700;
+  color: var(--gold2); letter-spacing: 1px; text-transform: uppercase;
+  text-align: center;
+}
+
+.product-table-header span:first-child { text-align: left; }
+
+.product-row {
+  display: grid;
+  grid-template-columns: 1fr 100px 100px 100px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--ant4);
+  align-items: center;
+  transition: background .15s;
+}
+
+.product-row:last-child { border-bottom: none; }
+.product-row:hover { background: var(--ant2); }
+
+.prod-name { font-size: 13px; font-weight: 600; color: var(--white); }
+.prod-unit { font-size: 11px; color: var(--grey); margin-top: 2px; }
+.prod-suggest { font-size: 11px; color: var(--gold2); text-align: center; }
+.prod-price { font-size: 12px; color: var(--grey); text-align: center; }
+
+.qty-input {
+  width: 70px; text-align: center;
+  padding: 7px 10px; margin: 0 auto;
+  display: block;
+}
+
+/* ÖZET KUTU */
+.summary-box {
+  background: var(--ant2);
+  border: 1px solid var(--gold3);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.summary-title {
+  font-size: 13px; font-weight: 700;
+  color: var(--gold2); letter-spacing: 1px;
+  text-transform: uppercase; margin-bottom: 14px;
+}
+
+.summary-row {
+  display: flex; justify-content: space-between;
+  align-items: center; padding: 8px 0;
+  border-bottom: 1px solid var(--ant3);
+  font-size: 13px;
+}
+
+.summary-row:last-child { border-bottom: none; }
+.summary-row .s-label { color: var(--grey); }
+.summary-row .s-val   { color: var(--cream); font-weight: 600; }
+.summary-row.total    { padding-top: 14px; }
+.summary-row.total .s-label { color: var(--white); font-weight: 700; font-size: 15px; }
+.summary-row.total .s-val   { color: var(--gold); font-weight: 800; font-size: 18px; }
+.summary-row.discount .s-val { color: var(--green); }
+
+/* DIVIDER */
+.divider {
+  height: 1px; background: var(--ant3);
+  margin: 24px 0;
+}
+
+/* INFO BOX */
+.info-box {
+  background: rgba(200,150,46,.06);
+  border: 1px solid var(--gold3);
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  font-size: 12px; color: var(--grey);
+  line-height: 1.6;
+}
+
+.info-box strong { color: var(--gold2); }
+
+/* BUTTONS */
+.btn-row {
+  display: flex; gap: 12px;
+  margin-top: 28px;
+}
+
+.btn-back {
+  flex: 1;
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px solid var(--ant4);
+  background: transparent;
+  color: var(--grey);
+  font-size: 14px; font-weight: 600;
+  cursor: pointer;
+  transition: all .2s;
+}
+
+.btn-back:hover { border-color: var(--gold3); color: var(--gold2); }
+
+.btn-next {
+  flex: 2;
+  padding: 14px;
+  border-radius: 10px;
+  border: none;
+  background: var(--gold);
+  color: var(--ant);
+  font-size: 14px; font-weight: 800;
+  cursor: pointer;
+  letter-spacing: .5px;
+  transition: all .2s;
+}
+
+.btn-next:hover { background: var(--gold2); transform: translateY(-1px); }
+.btn-next:active { transform: translateY(0); }
+
+/* SUCCESS */
+.success-screen {
+  text-align: center;
+  padding: 40px 0;
+}
+
+.success-icon { font-size: 56px; margin-bottom: 16px; }
+.success-title { font-size: 26px; font-weight: 800; color: var(--white); margin-bottom: 8px; }
+.success-sub { font-size: 14px; color: var(--grey); line-height: 1.6; margin-bottom: 32px; }
+
+.whatsapp-btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: #25d366;
+  color: #fff; font-weight: 700; font-size: 15px;
+  padding: 14px 28px; border-radius: 50px;
+  text-decoration: none;
+  transition: all .2s;
+}
+
+.whatsapp-btn:hover { background: #1da851; transform: translateY(-2px); }
+
+/* FIELD HINT */
+.field-hint { font-size: 10px; color: var(--grey2); margin-top: 4px; }
+
+/* RANGE */
+input[type=range] {
+  -webkit-appearance: none;
+  width: 100%; height: 4px;
+  background: var(--ant4);
+  border-radius: 2px; border: none; padding: 0;
+  outline: none;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: var(--gold);
+  cursor: pointer;
+  box-shadow: 0 0 0 3px rgba(200,150,46,.2);
+}
+
+.range-labels {
+  display: flex; justify-content: space-between;
+  font-size: 10px; color: var(--grey); margin-top: 4px;
+}
+
+.range-val {
+  text-align: center;
+  font-size: 20px; font-weight: 800; color: var(--gold);
+  margin: 8px 0 4px;
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="logo-wrap">
+    <div class="logo-mark">
+      <div class="bar bar-l"></div>
+      <div class="bar bar-m"></div>
+      <div class="bar bar-r"></div>
+    </div>
+  </div>
+  <div class="logo-text">
+    <h1>HASAD</h1>
+    <p>KÖYDEN SEÇİLDİ · SOFRANIZA ULAŞTI</p>
+  </div>
+  <div class="header-right">
+    <p>Kişisel Paket Formu</p>
+    <strong>Ücretsiz & Taahhütsüz Başlayın</strong>
+  </div>
+</div>
+
+<!-- PROGRESS -->
+<div class="progress-bar">
+  <div class="steps">
+    <div class="step-item active" id="st0">
+      <div class="step-dot">1</div>
+      <div class="step-lbl">Temel Bilgiler</div>
+    </div>
+    <div class="step-item" id="st1">
+      <div class="step-dot">2</div>
+      <div class="step-lbl">Sağlık & Beslenme</div>
+    </div>
+    <div class="step-item" id="st2">
+      <div class="step-dot">3</div>
+      <div class="step-lbl">Tüketim</div>
+    </div>
+    <div class="step-item" id="st3">
+      <div class="step-dot">4</div>
+      <div class="step-lbl">Paket & Abonelik</div>
+    </div>
+    <div class="step-item" id="st4">
+      <div class="step-dot">✓</div>
+      <div class="step-lbl">Tamamlandı</div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ADIM 1: TEMEL BİLGİLER -->
+<div class="section active" id="s0">
+  <div class="section-title">Merhaba, sizi tanıyalım 👋</div>
+  <div class="section-sub">HASAD kişisel paketinizi hazırlayabilmemiz için birkaç temel bilgiye ihtiyacımız var.</div>
+
+  <div class="form-row">
+    <div class="field">
+      <label>Ad Soyad *</label>
+      <input type="text" id="f_ad" placeholder="Zeynep Arslan">
+    </div>
+    <div class="field">
+      <label>Telefon *</label>
+      <input type="tel" id="f_tel" placeholder="05XX XXX XX XX">
+    </div>
+  </div>
+
+  <div class="form-row single">
+    <div class="field">
+      <label>Teslimat Adresi *</label>
+      <input type="text" id="f_adres" placeholder="Mahalle, sokak, no, daire — İstanbul">
+    </div>
+  </div>
+
+  <div class="form-row triple">
+    <div class="field">
+      <label>Hane Büyüklüğü *</label>
+      <select id="f_hane">
+        <option value="">Seçiniz</option>
+        <option value="1">1 Kişi</option>
+        <option value="2">2 Kişi</option>
+        <option value="3">3 Kişi</option>
+        <option value="4">4 Kişi</option>
+        <option value="5">5+ Kişi</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Çocuk Var mı?</label>
+      <select id="f_cocuk">
+        <option value="hayir">Hayır</option>
+        <option value="0-5">Evet (0–5 yaş)</option>
+        <option value="6-12">Evet (6–12 yaş)</option>
+        <option value="13+">Evet (13+ yaş)</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Tercih Teslimat Günü</label>
+      <select id="f_gun">
+        <option value="pazartesi">Pazartesi</option>
+        <option value="sali">Salı</option>
+        <option value="carsamba">Çarşamba</option>
+        <option value="persembe">Perşembe</option>
+        <option value="cuma">Cuma</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn-next" onclick="next(0)">Devam Et →</button>
+  </div>
+</div>
+
+<!-- ADIM 2: SAĞLIK & BESLENME -->
+<div class="section" id="s1">
+  <div class="section-title">Beslenme tercihleriniz 🌿</div>
+  <div class="section-sub">Paketinizi sizin için en uygun şekilde hazırlayabilmemiz için beslenme alışkanlıklarınızı paylaşın.</div>
+
+  <label style="margin-bottom:10px;display:block">Beslenme Şekli</label>
+  <div class="check-grid" id="beslenme">
+    <div class="check-item" onclick="toggleCheck(this)">
+      <input type="checkbox" value="normal">
+      <div class="check-box"></div>
+      <div><div class="check-label">🍽️ Normal</div><div class="check-sub">Kısıtlama yok</div></div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <input type="checkbox" value="vejetaryen">
+      <div class="check-box"></div>
+      <div><div class="check-label">🥗 Vejetaryen</div><div class="check-sub">Et tüketilmiyor</div></div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <input type="checkbox" value="vegan">
+      <div class="check-box"></div>
+      <div><div class="check-label">🌱 Vegan</div><div class="check-sub">Hayvansal yok</div></div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <input type="checkbox" value="glutensiz">
+      <div class="check-box"></div>
+      <div><div class="check-label">🚫🌾 Glutensiz</div><div class="check-sub">Gluten hassasiyeti</div></div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <input type="checkbox" value="laktozsuz">
+      <div class="check-box"></div>
+      <div><div class="check-label">🥛 Laktozsuz</div><div class="check-sub">Süt hassasiyeti</div></div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <input type="checkbox" value="diyabetik">
+      <div class="check-box"></div>
+      <div><div class="check-label">🩺 Diyabetik</div><div class="check-sub">Şeker kısıtlı</div></div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <label style="margin-bottom:10px;display:block">Allerjenler</label>
+  <div class="check-grid" id="allerjenler">
+    <div class="check-item" onclick="toggleCheck(this)">
+      <input type="checkbox" value="yumurta">
+      <div class="check-box"></div>
+      <div><div class="check-label">🥚 Yumurta</div></div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <input type="checkbox" value="sut">
+      <div class="check-box"></div>
+      <div><div class="check-label">🥛 Süt ürünleri</div></div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <input type="checkbox" value="gluten">
+      <div class="check-box"></div>
+      <div><div class="check-label">🌾 Gluten</div></div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <input type="checkbox" value="yok">
+      <div class="check-box"></div>
+      <div><div class="check-label">✅ Allerjen yok</div></div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="form-row single">
+    <div class="field">
+      <label>Kaçınılan veya İstenmeyen Ürünler</label>
+      <textarea id="f_kacin" placeholder="Örn: Bal kullanmıyorum, peynir istemiyorum..."></textarea>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="field">
+      <label>Haftada kaç gün evde yemek pişiriliyor?</label>
+      <div class="range-val" id="pisirme_val">4 gün</div>
+      <input type="range" min="1" max="7" value="4" id="f_pisirme"
+             oninput="document.getElementById('pisirme_val').textContent=this.value+' gün'">
+      <div class="range-labels"><span>1 gün</span><span>7 gün</span></div>
+    </div>
+    <div class="field">
+      <label>Kahvaltı kaç kişi düzenli yapıyor?</label>
+      <select id="f_kahvalti">
+        <option value="1">1 Kişi</option>
+        <option value="2" selected>2 Kişi</option>
+        <option value="3">3 Kişi</option>
+        <option value="4">4 Kişi</option>
+        <option value="5">5+ Kişi</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn-back" onclick="prev(1)">← Geri</button>
+    <button class="btn-next" onclick="next(1)">Devam Et →</button>
+  </div>
+</div>
+
+<!-- ADIM 3: TÜKETİM & ÜRÜNLER -->
+<div class="section" id="s2">
+  <div class="section-title">Aylık tüketiminizi belirleyin 📦</div>
+  <div class="section-sub">Hane büyüklüğünüze göre önerilen miktarları hazırladık. İstediğiniz gibi düzenleyebilirsiniz.</div>
+
+  <div class="info-box">
+    <strong>💡 Nasıl çalışır?</strong> Sarı rakamlar hane büyüklüğünüze göre hesapladığımız önerilen aylık miktardır.
+    Siz istediğiniz miktarı beyaz kutucuğa yazabilirsiniz. Toplam tutar otomatik güncellenir.
+  </div>
+
+  <div class="product-table">
+    <div class="product-table-header">
+      <span>Ürün</span>
+      <span>Öneri/Ay</span>
+      <span>Miktar</span>
+      <span>Fiyat</span>
+    </div>
+
+    <div class="product-row" id="pr_yumurta">
+      <div>
+        <div class="prod-name">🥚 Köy Yumurtası</div>
+        <div class="prod-unit">adet · 8 TL/adet</div>
+      </div>
+      <div class="prod-suggest" id="sug_yumurta">—</div>
+      <input type="number" class="qty-input" id="q_yumurta" min="0" value="0"
+             oninput="updateTotal()">
+      <div class="prod-price" id="p_yumurta">0 TL</div>
+    </div>
+
+    <div class="product-row" id="pr_kuru_kayisi">
+      <div>
+        <div class="prod-name">🍑 Kuru Kayısı</div>
+        <div class="prod-unit">kg · 180 TL/kg</div>
+      </div>
+      <div class="prod-suggest" id="
